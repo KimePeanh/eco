@@ -1,6 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eco/src/features/home/widget/product.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,23 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   final heights = [200, 250];
-  Future getmydetail() async {
-    FirebaseFirestore.instance
-        .collection("product")
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      print(querySnapshot.docs.length);
-      querySnapshot.docs.forEach((doc) {
-        if (doc['uid'].toString() == 'c6hNS6Ze21oc4VrcOYkJ') {
-          print(doc['products']);
-          product = doc['products'];
-        } else {
-          print("object");
-          print(doc['uid']);
-        }
-      });
-    });
-  }
+
 
   @override
   void initState() {
@@ -50,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    getmydetail();
     print(product.length);
     final List<Map> myProducts = List.generate(
         100000, (index) => {"id": index, "name": "Product $index"}).toList();
@@ -341,234 +325,114 @@ class _HomeScreenState extends State<HomeScreen> {
                       textScaleFactor: 1,
                     ),
                   ),
-
-                  // StreamBuilder(
-                  //     stream: FirebaseFirestore.instance
-                  //         .collection("product")
-                  //         .where('uid', isEqualTo: "c6hNS6Ze21oc4VrcOYkJ")
-                  //         .snapshots(),
-                  //     builder:
-                  //         (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  //       if (snapshot.hasData) {
-                  //         print("object");
-                  //         log(snapshot.data!.docs.toString());
-                  //         return GridView.builder(
-                  //             // itemCount: snapshot.data!.docs[0].get("product").length,
-                  //             shrinkWrap: true,
-                  //             physics: NeverScrollableScrollPhysics(),
-                  //             gridDelegate:
-                  //                 SliverGridDelegateWithFixedCrossAxisCount(
-                  //                     crossAxisCount: 2),
-                  //             itemBuilder: (context, index) {
-                  //               return Container(
-                  //                 width: width * 0.4,
-                  //                 color: maincolor,
-                  //                 height: 100,
-                  //                 padding: EdgeInsets.all(10),
-                  //                 child: Column(
-                  //                   children: <Widget>[],
-                  //                 ),
-                  //               );
-                  //             });
-                  //       } else {
-                  //         return Text("data");
-                  //       }
-                  //     })
-
-                  GridView.builder(
-                      itemCount: product.length,
-                      shrinkWrap: true,
-                      primary: false,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 5 / 8, crossAxisCount: 2),
-                      itemBuilder: (context, index) {
-                        return product[index]['discount'] != null
-                            ? Container(
-                                alignment: Alignment.topCenter,
-                                margin: EdgeInsets.all(5),
-                                width: width * 0.4,
-                                decoration: BoxDecoration(
-                                    color: white,
-                                    borderRadius: BorderRadius.circular(5)),
-                                // color: maincolor,
-                                // height: 300,
-                                // padding: EdgeInsets.only(),
-                                child: Flexible(
-                                  child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        alignment: Alignment.topCenter,
-                                        color: white,
-                                        // height: 200,
-                                        // width: width * 0.4,
-                                        child: Image(
-                                          // fit: BoxFit.fitHeight,
-                                          image: NetworkImage(
-                                              product[index]['pic']),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("product")
+                          // .where('uid', isEqualTo: user.uid)
+                          .snapshots(),
+                      builder:
+                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          return GridView.builder(
+                              itemCount:
+                                  snapshot.data!.docs[0].get('products').length,
+                              shrinkWrap: true,
+                              primary: false,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      childAspectRatio: 5 / 8,
+                                      crossAxisCount: 2),
+                              itemBuilder: (context, index) {
+                                return snapshot.data!.docs[0]
+                                                .get('products')[index]
+                                            ['discount'] !=
+                                        null
+                                    ? Stack(
                                         children: [
-                                          Container(
-                                              alignment: Alignment.topLeft,
-                                              child: Text(
-                                                '${product[index]['price']}\$',
-                                                style: TextStyle(
-                                                    color: Colors.red.shade600,
-                                                    fontWeight: bold,
-                                                    fontFamily: 'a'),
-                                                textScaleFactor: 1.2,
-                                              )),
-                                          SizedBox(
-                                            width: 10,
+                                          Product(
+                                            dis: snapshot.data!.docs[0]
+                                                .get('products')[index]['dis']
+                                                .toString(),
+                                            disp: snapshot.data!.docs[0]
+                                                .get('products')[index]['disp']
+                                                .toString(),
+                                            title: snapshot.data!.docs[0]
+                                                .get('products')[index]['title']
+                                                .toString(),
+                                            price: snapshot.data!.docs[0]
+                                                .get('products')[index]['price']
+                                                .toString(),
+                                            url: snapshot.data!.docs[0]
+                                                .get('products')[index]['pic'],
+                                            pf: snapshot.data!.docs[0]
+                                                .get('url')
+                                                .toString(),
+                                            name: snapshot.data!.docs[0]
+                                                .get('name')
+                                                .toString(),
+                                            discount: snapshot.data!.docs[0]
+                                                .get('products')[index]
+                                                    ['discount']
+                                                .toString(),
                                           ),
-                                          Container(
-                                              // alignment: Alignment.topLeft,
-                                              child: product[index]['disp'] !=
-                                                      null
-                                                  ? Text(
-                                                      '${product[index]['disp']}\$',
-                                                      style: TextStyle(
-                                                          color: Colors.grey,
-                                                          fontWeight: bold,
-                                                          fontFamily: 'a',
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough),
-                                                    )
-                                                  : null)
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          product[index]['title'],
-                                          style: TextStyle(
-                                              fontFamily: 'a',
-                                              fontWeight: bold),
-                                          softWrap: false,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      Expanded(
-                                          child: Row(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(10),
-                                            color: maincolor,
-                                            child: Text('${product[index]['discount']}% off', style: TextStyle(color: white),),
-                                          ),
-                                          Expanded(
+                                          AspectRatio(
+                                            aspectRatio: 5 / 8,
                                             child: Container(
-                                              padding: EdgeInsets.only(right: 10),
-                                              alignment: Alignment.centerRight,
-                                              child: Icon(Icons.favorite_outline,
-                                                  color: maincolor),
-                                            ),
-                                          ),
-                                        ],
-                                      ))
-                                      // Expanded(child: Container(child: Text(product[index]['des']),))
-                                      // , Expanded(child: Container())
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Container(
-                                alignment: Alignment.topCenter,
-                                margin: EdgeInsets.all(5),
-                                width: width * 0.4,
-                                decoration: BoxDecoration(
-                                    color: white,
-                                    borderRadius: BorderRadius.circular(5)),
-                                // color: maincolor,
-                                // height: 300,
-                                // padding: EdgeInsets.only(),
-                                child: Flexible(
-                                  child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        alignment: Alignment.topCenter,
-                                        color: white,
-                                        // height: 200,
-                                        // width: width * 0.4,
-                                        child: Image(
-                                          // fit: BoxFit.fitHeight,
-                                          image: NetworkImage(
-                                              product[index]['pic']),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
+                                              padding: EdgeInsets.only(top: 10),
                                               alignment: Alignment.topLeft,
-                                              child: Text(
-                                                '${product[index]['price']}\$',
-                                                style: TextStyle(
-                                                    color: Colors.red.shade600,
-                                                    fontWeight: bold,
-                                                    fontFamily: 'a'),
-                                                textScaleFactor: 1.2,
-                                              )),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Container(
-                                              // alignment: Alignment.topLeft,
-                                              child: product[index]['disp'] !=
-                                                      null
-                                                  ? Text(
-                                                      '${product[index]['price']}\$',
-                                                      style: TextStyle(
-                                                          color: Colors.grey,
-                                                          fontWeight: bold,
-                                                          fontFamily: 'a',
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough),
-                                                    )
-                                                  : null)
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red.shade600
+                                                          .withOpacity(0.5),
+                                                    ),
+                                                    child: Text(
+                                                        '${snapshot.data!.docs[0].get('products')[index]['discount']}% off',
+                                                        style: TextStyle(
+                                                            color: white,
+                                                            fontWeight: bold,
+                                                            fontFamily: 'a')),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
                                         ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          product[index]['title'],
-                                          style: TextStyle(
-                                              fontFamily: 'a',
-                                              fontWeight: bold),
-                                          softWrap: false,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      Expanded(
-                                          child: Container(
-                                        padding: EdgeInsets.only(right: 10),
-                                        alignment: Alignment.centerRight,
-                                        child: Icon(Icons.favorite_outline,
-                                            color: maincolor),
-                                      ))
-                                      // Expanded(child: Container(child: Text(product[index]['des']),))
-                                      // , Expanded(child: Container())
-                                    ],
-                                  ),
-                                ),
-                              );
+                                      )
+                                    : Product(
+                                        dis: snapshot.data!.docs[0]
+                                            .get('products')[index]['dis']
+                                            .toString(),
+                                        disp: snapshot.data!.docs[0]
+                                            .get('products')[index]['disp']
+                                            .toString(),
+                                        title: snapshot.data!.docs[0]
+                                            .get('products')[index]['title']
+                                            .toString(),
+                                        price: snapshot.data!.docs[0]
+                                            .get('products')[index]['price']
+                                            .toString(),
+                                        url: snapshot.data!.docs[0]
+                                            .get('products')[index]['pic'],
+                                        pf: snapshot.data!.docs[0]
+                                            .get('url')
+                                            .toString(),
+                                        name: snapshot.data!.docs[0]
+                                            .get('name')
+                                            .toString(),
+                                        discount: snapshot.data!.docs[0]
+                                            .get('products')[index]['discount']
+                                            .toString(),
+                                      );
+                              });
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
                       })
                 ],
               ),
