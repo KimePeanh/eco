@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:eco/src/features/add_to_cart/bloc/cart_bloc.dart';
+import 'package:eco/src/features/product/widget/color.dart';
+import 'package:eco/src/features/product/widget/size_widget.dart';
 import 'package:eco/src/utils/constants/app_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,54 +63,7 @@ Choose(context, String url, String price, var color, var size, String btn) {
             height: 1,
             color: Colors.grey.shade200,
           ),
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-            child: Text(
-              "Color (${color.length})",
-              style: TextStyle(fontFamily: 'a', fontWeight: bold),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            // color: maincolor,
-            padding: EdgeInsets.only(left: 10),
-            height: height * 0.18,
-            // width: height * 0.20,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: color.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Container(
-                        height: height * 0.18,
-                        width: height * 0.15,
-                        decoration: BoxDecoration(
-                          // border: ,
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              child: FadeInImage.assetNetwork(
-                                  imageCacheWidth: 500,
-                                  placeholder: 'assets/images/load.gif',
-                                  image: url),
-                            ),
-                            Text("Color")
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-          ),
+          Colorr(color: color, url: url),
           SizedBox(
             height: 10,
           ),
@@ -121,73 +76,10 @@ Choose(context, String url, String price, var color, var size, String btn) {
           SizedBox(
             height: 10,
           ),
-          size != null
-              ? Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: Text(
-                    "Size",
-                    style: TextStyle(fontFamily: 'a', fontWeight: bold),
-                  ),
-                )
-              : Container(),
+          Sizee(size: size),
           SizedBox(
             height: 10,
           ),
-          size != null
-              ? BlocListener(
-                  bloc: cartBloc,
-                  listener: (context, state) {
-                    if (state is Choosingsize) {
-                    } else if (state is Errorhoosingsize) {
-                    } else if (state is Choosedsize) {
-                      issize = true;
-                    }
-                    print(issize);
-                    log(cartBloc.sizeindex.toString());
-                  },
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    // color: maincolor,
-                    padding: EdgeInsets.only(left: 10),
-                    height: 50,
-                    // width: height * 0.20,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: size.length,
-                        itemBuilder: (context, index) {
-                          return Row(
-                            children: [
-                              InkWell(
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    border: cartBloc.sizeindex != null
-                                        ? Border.all(color: maincolor, width: 2)
-                                        : null,
-                                    color: Colors.grey.shade200,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Text(
-                                    size[index],
-                                    style: TextStyle(fontFamily: 'a'),
-                                  ),
-                                ),
-                                onTap: () {
-                                  cartBloc.add(choosesize(
-                                      size: size[index], index: index));
-                                },
-                              ),
-                              SizedBox(
-                                width: 10,
-                              )
-                            ],
-                          );
-                        }),
-                  ),
-                )
-              : Container(),
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             width: width,
@@ -278,19 +170,26 @@ Choose(context, String url, String price, var color, var size, String btn) {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  alignment: Alignment.center,
-                  width: width * 0.9,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: maincolor,
-                    borderRadius: BorderRadius.circular(10),
+                InkWell(
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: width * 0.9,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: maincolor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      btn,
+                      style: TextStyle(color: white, fontWeight: bold),
+                      textScaleFactor: 1.1,
+                    ),
                   ),
-                  child: Text(
-                    btn,
-                    style: TextStyle(color: white, fontWeight: bold),
-                    textScaleFactor: 1.1,
-                  ),
+                  onTap: (){
+                    if (btn == "ADD TO CART"){
+                      cartBloc.add(AddtoCartPress(color: color[index], size: size, qty: 1));
+                    }
+                  },
                 ),
               ],
             ),

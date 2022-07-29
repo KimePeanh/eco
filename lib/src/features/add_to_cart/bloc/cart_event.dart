@@ -10,14 +10,9 @@ abstract class CartEvent extends Equatable {
 class AddtoCartPress extends CartEvent {
   final String color;
   final String size;
-  final int colorindex;
-  final int sizeindex;
+  final int qty;
 
-  AddtoCartPress(
-      {required this.color,
-      required this.size,
-      required this.colorindex,
-      required this.sizeindex});
+  AddtoCartPress({required this.color, required this.size, required this.qty});
 }
 
 class choosesize extends CartEvent {

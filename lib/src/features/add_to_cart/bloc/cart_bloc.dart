@@ -22,5 +22,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         yield Errorhoosingsize();
       }
     }
+
+    if (event is AddtoCartPress) {
+      yield Adding();
+      try {
+        await cartRepository.AddtoCart(
+            color: event.color, size: event.size, qty: event.qty);
+        yield Added();
+      } catch (e) {
+        yield ErrorAdd(e: e.toString());
+      }
+    }
   }
 }
