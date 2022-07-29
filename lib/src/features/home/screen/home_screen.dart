@@ -27,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final heights = [200, 250];
 
-
   @override
   void initState() {
     super.initState();
@@ -333,6 +332,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder:
                           (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasData) {
+                          // log(
+                          //   snapshot.data!.docs[0].get('products')[0]
+                          //       ['color'].toString()
+                          // );
                           return GridView.builder(
                               itemCount:
                                   snapshot.data!.docs[0].get('products').length,
@@ -375,6 +378,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .get('products')[index]
                                                     ['discount']
                                                 .toString(),
+                                            color: snapshot.data!.docs[0]
+                                                    .get('products')[index]
+                                                ['color'],
+                                            size: snapshot.data!.docs[0]
+                                                .get('products')[index]['size'],
                                           ),
                                           AspectRatio(
                                             aspectRatio: 5 / 8,
@@ -426,6 +434,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         discount: snapshot.data!.docs[0]
                                             .get('products')[index]['discount']
                                             .toString(),
+                                        color: snapshot.data!.docs[0]
+                                            .get('products')[index]['color'],
+                                        size: snapshot.data!.docs[0]
+                                            .get('products')[index]['size'],
                                       );
                               });
                         } else {

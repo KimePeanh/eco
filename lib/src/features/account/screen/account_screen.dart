@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eco/src/features/account/widget/favorite.dart';
 import 'package:eco/src/features/account/widget/profile.dart';
 import 'package:eco/src/features/account/widget/status.dart';
+import 'package:eco/src/features/account/widget/wallet.dart';
 import 'package:eco/src/features/login_register/screen/required_login.dart';
 import 'package:eco/src/utils/constants/app_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,20 +43,77 @@ class _AccountScreenState extends State<AccountScreen> {
                             height: 20,
                           ),
                           Container(
-                            width: MediaQuery.of(context).size.width * 0.95,
-                            height: 100,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            // height: 100,
                             child: Row(
                               children: [
-                                // Status(context, "assets/images/money.png","Payment"),
-                                // SizedBox(width: 10,),
-                                // Status(context, "assets/images/money.png","Payment"),
-                                // SizedBox(width: 10,),
-                                // Status(context, "assets/images/money.png","Payment"),
-                                // SizedBox(width: 10,),
-                                // Status(context, "assets/images/money.png","Payment")
+                                Status(context, "assets/images/money.png",
+                                    "Payment"),
+                                // SizedBox(
+                                //   width: 5,
+                                // ),
+                                Status(context, "assets/images/income.png",
+                                    "Paid"),
+                                // SizedBox(
+                                //   width: 5,
+                                // ),
+                                Status(context, "assets/images/motorbike.png",
+                                    "Delivery"),
+                                // SizedBox(
+                                //   width: 5,
+                                // ),
+                                Status(context, "assets/images/done.png",
+                                    "Received")
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Wallet(context, "120 USD"),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Setting(context),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Favorite(context),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ShippingAdress(context),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Logout(context),
+                          // Expanded(
+                          //   flex: 1,
+                          //     child: Container(
+                          //       width: MediaQuery.of(context).size.width * 0.8,
+                          //       height: 50,
+                          //       decoration: BoxDecoration(
+                          //         border: Border.all(color: maincolor, width: 1),
+                          //         borderRadius: BorderRadius.circular(10),
+                          //       ),
+                          //       child: Text(
+                          //         "Logout",
+                          //         style: TextStyle(color: Colors.red.shade600),
+                          //       ),
+                          //     ))
+                          // Container(
+                          //   alignment: Alignment.center,
+                          //       width: MediaQuery.of(context).size.width * 0.8,
+                          //       height: 55,
+                          //       decoration: BoxDecoration(
+                          //         border: Border.all(color: maincolor, width: 1),
+                          //         borderRadius: BorderRadius.circular(10),
+                          //       ),
+                          //       child: Text(
+                          //         "Logout",
+                          //         style: TextStyle(color: Colors.red.shade600, fontFamily: 'a', fontWeight: bold),textScaleFactor: 1.32,
+                          //       ),
+                          //     )
                         ],
                       ),
                     ),

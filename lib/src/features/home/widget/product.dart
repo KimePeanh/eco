@@ -15,6 +15,8 @@ class Product extends StatefulWidget {
   final String pf;
   final String name;
   final String discount;
+  var color;
+  var size;
   Product(
       {required this.dis,
       required this.disp,
@@ -23,7 +25,7 @@ class Product extends StatefulWidget {
       required this.url,
       required this.pf,
       required this.name,
-      required this.discount});
+      required this.discount, required this.color, required this.size});
 
   @override
   State<Product> createState() => _ProductState();
@@ -55,6 +57,7 @@ class _ProductState extends State<Product> {
               children: [
                 Container(
                   child: FadeInImage.assetNetwork(
+                    imageCacheWidth: 500,
                     placeholder: 'assets/images/load.gif',
                     image: '${widget.url}',
                   ),
@@ -192,7 +195,7 @@ class _ProductState extends State<Product> {
             title: widget.title,
             discount: widget.discount,
             pf: widget.pf,
-            name: widget.name,
+            name: widget.name, color: widget.color, size: widget.size,
           ),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,

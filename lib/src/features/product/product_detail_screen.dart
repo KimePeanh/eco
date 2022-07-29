@@ -1,7 +1,11 @@
+import 'dart:developer';
+
+import 'package:eco/src/features/product/widget/choice.dart';
 import 'package:eco/src/features/product/widget/shop_pf.dart';
 import 'package:eco/src/utils/constants/app_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   // const ProductDetailScreen({ Key? key }) : super(key: key);
@@ -12,12 +16,18 @@ class ProductDetailScreen extends StatefulWidget {
   final String discount;
   final String pf;
   final String name;
+  var color;
+  var size;
   ProductDetailScreen(
       {required this.url,
       required this.price,
       required this.disp,
       required this.title,
-      required this.discount, required this.pf, required this.name});
+      required this.discount,
+      required this.pf,
+      required this.name,
+      required this.color,
+      required this.size});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -29,6 +39,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    // log(widget.color.toString());
     return Scaffold(
       backgroundColor: white,
       // extendBodyBehindAppBar: true,
@@ -75,6 +86,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   child: Stack(
                             children: [
                               FadeInImage.assetNetwork(
+                                imageCacheWidth: 500,
                                 placeholder: 'assets/images/load.gif',
                                 image: '${widget.url}',
                               ),
@@ -230,8 +242,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 20,),
-                      ShopProfile(context, widget.pf, widget.name, "1000 follower")
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ShopProfile(
+                          context, widget.pf, widget.name, "1000 follower")
                     ],
                   ),
                 )),
@@ -241,33 +256,47 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: maincolor.withOpacity(0.3),
+                  child: InkWell(
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: maincolor.withOpacity(0.3),
+                      ),
+                      child: Text(
+                        "BUY NOW",
+                        style: TextStyle(
+                            color: maincolor,
+                            fontFamily: 'a',
+                            fontWeight: bold),
+                        textScaleFactor: 1.1,
+                      ),
                     ),
-                    child: Text(
-                      "BUY NOW",
-                      style: TextStyle(
-                          color: maincolor, fontFamily: 'a', fontWeight: bold),
-                      textScaleFactor: 1.1,
-                    ),
+                    onTap: () {
+                      Choose(context, widget.url, widget.price, widget.color,
+                          widget.size, "BUY NOW");
+                    },
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: maincolor,
+                  child: InkWell(
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: maincolor,
+                      ),
+                      child: Text(
+                        "ADD TO CART",
+                        style: TextStyle(
+                            color: white, fontFamily: 'a', fontWeight: bold),
+                        textScaleFactor: 1.1,
+                      ),
                     ),
-                    child: Text(
-                      "ADD TO CART",
-                      style: TextStyle(
-                          color: white, fontFamily: 'a', fontWeight: bold),
-                      textScaleFactor: 1.1,
-                    ),
+                    onTap: () {
+                      Choose(context, widget.url, widget.price, widget.color,
+                          widget.size, 'ADD TO CART');
+                    },
                   ),
                 ),
               ],
